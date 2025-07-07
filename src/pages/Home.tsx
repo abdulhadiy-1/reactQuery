@@ -8,8 +8,11 @@ import {
   StarOutlined,
 } from "@ant-design/icons";
 import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/Modal";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate()
   const {
     data: products = [],
     isLoading,
@@ -17,6 +20,7 @@ const Home = () => {
   } = useGetAllProductsQuery("");
   if (isError) return <NotFound />;
   if (isLoading) return <div>Loading...</div>;
+
 
   function stars(rating: number) {
     const fullStars = Math.floor(rating);
@@ -60,17 +64,18 @@ const Home = () => {
                 More
               </Button>
               <Button
+              onClick={() => navigate(`/update/${item.id}`)}
                 className="hover:scale-[1.02] bg-yellow-600 hover:bg-yellow-500 duration-300 cursor-pointer"
                 size={"icon"}
               >
                 <EditOutlined />
               </Button>
-              <Button
-                className="hover:scale-[1.02] bg-red-700 hover:bg-red-600 duration-300 cursor-pointer"
-                size={"icon"}
+              <Modal
+              id={item.id}
+              title="Delte this Product?"
               >
                 <DeleteOutlined />
-              </Button>
+              </Modal>
             </div>
           </div>
         </div>
